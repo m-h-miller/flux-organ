@@ -1,39 +1,35 @@
 var Recorder = React.createClass({
-
-  getInitialState: function(){
-    var track = new Track({name: ""});
-    return { isRecording: false, track: track, input: "" };
+  getInitialState: function () {
+    return { isRecording: false, track: new Track({name: "", roll: []}) };
   },
 
-  recordHandler: function(){
-    this.state.track.name = this.state.input;
-    this.setState({isRecording: true});
+  pushedRecord: function () {
     this.state.track.startRecording();
+    KeyStore.addChangeHandler(this.recordNotes);
+    this.setState({isRecording: true});
   },
 
-  stopHandler: function () {
+  pushedStop: function () {
     this.state.track.stopRecording();
-    this.setState({isRecording: false, input: ""});
+    KeyStore.removeChangeHandler(this.recordNotes);
+    this.setState({isRecording: false});
   },
 
-  trackNameHandler: function (e) {
-    e.preventDefault();
-    this.setState({ input: e.currentTarget.value });
-  },
-
-  playHandler: function (e) {
-    e.preventDefault();
-    this.stopHandler();
+  pushedPlay: function () {
     this.state.track.play();
   },
 
-  render: function(){
-    return(
-      <div className="recorder group">
-        <input type="text" className="trackNamer" onChange={this.trackNameHandler} value={this.state.input}></input>
-        <button className="record" onClick={this.recordHandler}>Record</button>
-        <button className="stop" onClick={this.stopHandler}>Stop Recording</button>
-        <button className="play" onClick={this.playHandler}>Play Track</button>
+  recordNotes: function () {
+    var keysPressed = KeyStore.all();
+    this.state.track.addNotes(keysPressed);
+  },
+
+  render: function () {
+    return (
+      <div className="controls">
+        <button className="record" onClick={this.pushedRecord}>●</button>
+        <button className="stop" onClick={this.pushedStop}>◼︎</button>
+        <button className="play" onClick={this.pushedPlay}>►</button>
       </div>
     );
   }

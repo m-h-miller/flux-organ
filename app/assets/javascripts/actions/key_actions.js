@@ -1,20 +1,33 @@
 window.KeyActions = {
 
-  keyPressed: function(note){
+  octaveChange: function (octaveX) {
     AppDispatcher.dispatch({
-      eventType: KeyConstants.PRESSKEY,
-      noteName: note
+      eventType: 'OCTAVE',
+      octaveX: octaveX
     });
   },
 
-  keyReleased: function(note){
+  keyPressed: function (noteName) {
     AppDispatcher.dispatch({
-      eventType: KeyConstants.RELEASEKEY,
-      noteName: note
+      eventType: 'KEY_PRESSED',
+      noteName: noteName
     });
+  },
+
+  keyUnPressed: function (noteName) {
+    AppDispatcher.dispatch({
+      eventType: 'KEY_UNPRESSED',
+      noteName: noteName
+    });
+  },
+
+  batchPress: function (notes) {
+    AppDispatcher.dispatch({
+      eventType: 'BATCH_PRESS',
+      notes: notes
+    });
+    // KeyActions.keyUnPressed(KeyStore.all());
+    // KeyActions.keyPressed(notes);
   }
-
-
-
 
 };

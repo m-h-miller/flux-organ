@@ -1,8 +1,24 @@
-<div id="content"></div>
+<!DOCTYPE html>
+<html>
+  <head>
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,700,900' rel='stylesheet' type='text/css'>
+    <meta charset="utf-8">
+    <title>FluxOrgan</title>
+  </head>
+  <body>
+    <h1> Flux Organ </h1>
+    <h4>(an HTML5 web organ)</h4>
 
-<script type="text/javascript">
-  React.render(
-    React.createElement(Organ, {noteList: NOTE}),
-    document.getElementById("content")
-  );
-</script>
+    <div id="content"></div>
+
+    <script type="text/javascript">
+      React.render(React.createElement(Organ), document.getElementById("content"));
+    </script>
+    <br>
+    <p>Use the keys 'A-L' on your keyboard to play.</p>
+    <p>"Record" to start recording, "Stop" to stop recording, and "Play" to playback.</p>
+    <p>Use 'Z' and 'X' to change octaves.</p>
+    <span className="star">✧</span>
+
+  </body>
+</html

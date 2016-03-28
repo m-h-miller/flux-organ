@@ -1,48 +1,51 @@
-(function(){
+(function (root) {
 
-  var Track = window.Track = function (attr){
-    this.roll = attr.roll || [];
-    this.name = attr.name;
-    this.currentTime = Date.now();
-
-    this.startRecording = function () {
-      this.roll = [];
-      this.currentTime = Date.now();
-      KeyStore.addChangeHandler(this.addNotes);
-    };
-
-    this.addNotes = function (notes) {
-      var timeSlice = Date.now() - this.currentTime;
-      var newNotes = notes || KeyStore.currentKeys();
-
-      this.chord = {timeslice: timeSlice, notes: newNotes};
-      this.roll.push(this.chord);
-    }.bind(this);
-
-    this.stopRecording = function () {
-      this.addNotes([]);
-      KeyStore.removeChangeHandler(this.addNotes);
-    };
-
-    this.play = function(){
-      if (this.interval){
-        return;
-      } else {
-        var playbackStartTime = Date.now();
-        var currentNote = 0;
-        this.interval = setInterval(function(){
-          var currentTrackTime = Date.now();
-          var deltaT = currentTrackTime - playbackStartTime ;
-          var laterNotes = this.roll.filter(function(el){
-            debugger
-            return (el.timeSlice > deltaT);
-          });
-          var notesToPlay = laterNotes[0].notes;
-          KeyStore.currentKeys = notesToPlay;
-          KeyStore.changed();
-        }.bind(this), 100);
-      }
-    };
+  var Track = root.Track = function (attributes) {
+    this.name = attributes.name;
+    this.roll = attributes.roll;
   };
 
-})();
+  Track.prototype.startRecording = function () {
+    this.startTime = Date.now();
+    this.roll = [];
+
+  };
+
+  Track.prototype.play = function () {
+    if (this.intervalId) { return; }
+
+    var playbackStartTime = Date.now();
+
+    var currentNote = 0;
+
+    this.intervalId = setInterval(function () {
+
+      if (currentNote < this.roll.length) {
+        if (Date.now() - playbackStartTime > this.roll[currentNote].timeSlice) {
+          console.log("hello");
+          KeyActions.batchPress(this.roll[currentNote].notes);
+          currentNote++;
+        }
+      }
+      else {
+        delete this.intervalId;
+        clearInterval(this.intervalId);
+      }
+    }.bind(this), 1000/60);
+
+  };
+
+  Track.prototype.addNotes = function (notes) {
+    this.roll.push({
+      timeSlice: (Date.now() - this.startTime),
+      notes: notes
+    });
+  };
+
+  Track.prototype.stopRecording = function () {
+    this.addNotes([]);
+    console.log(this.roll);
+  };
+
+
+})(this);
