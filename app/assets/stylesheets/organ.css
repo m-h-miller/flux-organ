@@ -5,7 +5,7 @@ html, body, ul, li, h1, h3, div {
   font: inherit;
   text-align: center;
   text-decoration: inherit;
-  font-family: 'Courier New', Courier;
+  /*font-family: 'Courier New', Courier;*/
   background: transparent;
 }
 .group:after {
@@ -56,7 +56,7 @@ button {
   outline: none;
 }
 .play {
-  font-size: 36px;
+  font-size: 32px;
   padding: 10px;
   border: none;
 }
@@ -64,14 +64,14 @@ button {
   color: rgb(0, 208, 52);
 }
 .stop {
-  font-size: 48px;
+  font-size: 32px;
   border: none;
 }
 .stop:hover {
   color: white;
 }
 .record {
-  font-size: 48px;
+  font-size: 42px;
   padding-bottom: 20px;
   border: none;
 }
@@ -91,12 +91,13 @@ ul.keyboard {
 }
 li.note {
   /*background: #93c47d;*/
-  background-image: linear-gradient(rgb(255, 255, 255), rgb(163, 163, 163));
+  background-image: linear-gradient(grey, white);
   float: left;
   width: 50px;
   height: 100px;
   display: block;
-  border: 2px solid black;
+  border: 2px 2px 2px 2px solid black;
+  border-radius: 2px;
   font-size: 48px;
   box-shadow: 1px 5px 5px black;
   margin: 5px;
